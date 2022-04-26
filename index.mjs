@@ -1,11 +1,13 @@
 import dotenv from "dotenv";
 import express from "express";
 import fetch from "node-fetch";
+import cors from "cors";
 
 dotenv.config();
-console.log(process.env);
 const app = express();
 const port = process.env.PORT || 8000;
+
+app.use(cors());
 
 app.get("/api/user/:username", async (req, res) => {
   const orders = [];
@@ -29,7 +31,7 @@ app.get("/api/user/:username", async (req, res) => {
 });
 
 app.get("/api", async (req, res) => {
-  const users = [];
+  const userObj = { users: [] };
 
   const fetch_resp = await fetch(
     "https://app.helloretriever.com/api/v1/device_returns/",
@@ -42,12 +44,11 @@ app.get("/api", async (req, res) => {
   );
   const json_data = await fetch_resp.json();
   json_data.results.forEach((obj) => {
-    if (obj.purchaser_email && !users.includes(obj.purchaser_email)) {
-      users.push(obj.purchaser_email);
+    if (obj.purchaser_email && !userObj.users.includes(obj.purchaser_email)) {
+      userObj.users.push(obj.purchaser_email);
     }
   });
-  console.log(users);
-  res.send(json_data);
+  res.send(userObj);
 });
 
 app.listen(port, () => {
