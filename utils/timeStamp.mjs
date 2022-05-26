@@ -1,5 +1,11 @@
-export const timeStamp = (myDate) => {
-  let month = myDate.getMonth() + 1;
+/**
+ * Returns the current date and time in a human readable format.
+ * @param dateObj - Date Object - new Date()
+ * @returns - String - 2022-05-26T13:38:09
+ */
+
+export const timeStamp = (dateObj) => {
+  let month = dateObj.getMonth() + 1;
 
   // helper function
   const addZeroIfNeeded = (num) => {
@@ -7,12 +13,12 @@ export const timeStamp = (myDate) => {
   };
 
   month = addZeroIfNeeded(month);
-  let day = addZeroIfNeeded(myDate.getDate());
+  let day = addZeroIfNeeded(dateObj.getDate());
 
-  let year = myDate.getFullYear();
-  let hours = addZeroIfNeeded(myDate.getHours());
-  let mins = addZeroIfNeeded(myDate.getMinutes());
-  let seconds = addZeroIfNeeded(myDate.getSeconds());
+  let year = dateObj.getFullYear();
+  let hours = addZeroIfNeeded(dateObj.getHours());
+  let mins = addZeroIfNeeded(dateObj.getMinutes());
+  let seconds = addZeroIfNeeded(dateObj.getSeconds());
 
   return `${year}-${month}-${day}T${hours}:${mins}:${seconds}`;
 };

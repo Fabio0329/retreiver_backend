@@ -1,6 +1,13 @@
+// Modules
 import { timeStamp } from "../utils/timeStamp.mjs";
+import fetch from "node-fetch";
 
-export const fetchOrders = async (fetch, redisClient) => {
+/**
+ * Fetches data from the Retriever API and caches it - {userList: [], orders: []}
+ * @param redisClient - Generated Redis Client
+ */
+
+export const fetchOrders = async (redisClient) => {
   const formattedOrders = {};
   const userList = [];
   let numOfCalls = 0;
@@ -36,8 +43,7 @@ export const fetchOrders = async (fetch, redisClient) => {
   for (let key in formattedOrders) {
     userList.push(key);
   }
-  await redisClient.set("userList", JSON.stringify(userList));
+  await redisClient.set("userList", JSON.stringify(userList.sort()));
   await redisClient.set("orders", JSON.stringify(formattedOrders));
-  console.log(timeStamp(new Date()));
-  console.log(`# of API Calls: ${numOfCalls}`);
+  console.log(`${timeStamp(new Date())} - # of API Calls: ${numOfCalls}`);
 };
