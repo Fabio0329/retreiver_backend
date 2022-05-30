@@ -28,9 +28,9 @@ app.get("/api/userList", (req, res) => {
   userList(req, res, redisClient);
 });
 
-// Fetch and cache data on initialization/refresh data every 2hrs
+// Fetch and cache data on initialization/refresh data every 1hrs
 fetchOrders(redisClient);
-cron.schedule("0 */2 * * *", () => {
+cron.schedule("0 */1 * * *", () => {
   fetchOrders(redisClient);
 });
 
